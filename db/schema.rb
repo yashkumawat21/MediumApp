@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_04_093239) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_04_141928) do
   create_table "comments", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "post_id", null: false
@@ -49,6 +49,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_04_093239) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "views_count", default: 0
+    t.float "score"
     t.index ["author_id"], name: "index_posts_on_author_id"
     t.index ["topic_id"], name: "index_posts_on_topic_id"
   end
@@ -59,6 +60,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_04_093239) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "user_author_views", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "author_id", null: false
+    t.integer "view_count"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["author_id"], name: "index_user_author_views_on_author_id"
+    t.index ["user_id"], name: "index_user_author_views_on_user_id"
+  end
+
   create_table "user_post_views", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "post_id", null: false
@@ -67,6 +78,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_04_093239) do
     t.integer "views_count", default: 0
     t.index ["post_id"], name: "index_user_post_views_on_post_id"
     t.index ["user_id"], name: "index_user_post_views_on_user_id"
+  end
+
+  create_table "user_topic_views", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "topic_id", null: false
+    t.integer "view_count"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["topic_id"], name: "index_user_topic_views_on_topic_id"
+    t.index ["user_id"], name: "index_user_topic_views_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -85,6 +106,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_04_093239) do
   add_foreign_key "likes", "users"
   add_foreign_key "posts", "topics"
   add_foreign_key "posts", "users", column: "author_id"
+  add_foreign_key "user_author_views", "users"
+  add_foreign_key "user_author_views", "users", column: "author_id"
   add_foreign_key "user_post_views", "posts"
   add_foreign_key "user_post_views", "users"
+  add_foreign_key "user_topic_views", "topics"
+  add_foreign_key "user_topic_views", "users"
 end

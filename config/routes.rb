@@ -17,11 +17,13 @@ Rails.application.routes.draw do
 
 
 
-  
-
+  get 'topposts', to: 'posts#topposts'
   
   # Additional custom routes for filtering
   get '/posts/filter', to: 'posts#index'
+
+  get 'recommendbytopic' , to: 'posts#recommendbytopic'
+  get 'recommendbyauthor' , to: 'posts#recommendbyauthor'
 
   # Route for searching posts by author, topic, or content
   get '/posts/search/forpost', to: 'posts#search'

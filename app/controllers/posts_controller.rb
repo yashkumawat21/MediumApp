@@ -1,6 +1,6 @@
 # app/controllers/posts_controller.rb
 class PostsController < ApplicationController
-    before_action :authenticate_user!, except: [:index, :search]
+    before_action :authenticate_user!, except: [:index, :search, :topposts]
   
     def index
       @posts = Post.all
@@ -24,13 +24,37 @@ class PostsController < ApplicationController
     def show
       @post = Post.find(params[:id])
       user_post_view = current_user.user_post_views.find_by(post: @post)
+      user_topic_view = current_user.user_topic_views.find_by(topic: @post.topic)
+      user_author_view = current_user.user_author_views.find_by(author: @post.author)
 
       if user_post_view
         # User has viewed the post before, increment the view count in UserPostView
         user_post_view.increment!(:views_count)
+       
       else
         # User is viewing the post for the first time, create a new UserPostView record
         current_user.user_post_views.create(post: @post, views_count: 1)
+       
+      end
+      if user_topic_view
+        # User has viewed the post before, increment the view count in UserPostView
+       
+        user_topic_view.increment!(:view_count)
+        
+      else
+        # User is viewing the post for the first time, create a new UserPostView record
+       
+        current_user.user_topic_views.create(topic: @post.topic, view_count: 1)
+        
+      end
+      if user_author_view
+        # User has viewed the post before, increment the view count in UserPostView
+        
+        user_author_view.increment!(:view_count)
+      else
+        # User is viewing the post for the first time, create a new UserPostView record
+        
+        current_user.user_author_views.create(author: @post.author, view_count: 1)
       end
   
       # Increment the views_count for the post (separately from UserPostView)
@@ -64,6 +88,72 @@ class PostsController < ApplicationController
       @post.destroy
       head :no_content
     end
+
+    def topposts
+      @posts = Post.all
+      @posts.each do |post|
+        post.score = 0.6 * post.num_likes + 0.4 * post.views+ 0.000001 * (post.created_at - Time.now).to_i
+        
+      end
+  
+      # Sort posts in descending order of their scores
+      @posts = @posts.sort_by { |post| post.score }.reverse
+      render json: @posts, include: [:author, :topic] , methods: [:num_likes, :num_comments]
+    end
+
+    def recommendbytopic
+      postsviewed = current_user.user_topic_views
+
+    
+      # Calculate scores for each post
+      posts = Post.all
+    
+      # Get topics with posts authored by the current_user
+      
+      posts.each do |post|
+        topic = post.topic
+        num_likes = post.num_likes
+        num_views = post.views
+        num_posts_in_topic = postsviewed.find_by(topic_id: topic).view_count
+        post.score = 0.3 * num_likes + 0.2 * num_views + 0.000001 * (post.created_at - Time.now).to_i+ 0.5*num_posts_in_topic
+      end
+    
+      # Sort filtered posts in descending order of their scores
+      sorted_posts = posts.sort_by { |post| post.score }.reverse
+    
+      # Get top 10 recommended posts
+      recommended_posts = sorted_posts.take(10)
+    
+      render json: recommended_posts, include: [:author, :topic], methods: [:num_likes, :num_comments]
+    end
+
+    def recommendbyauthor
+      postsviewed = current_user.user_author_views
+
+    
+      # Calculate scores for each post
+      posts = Post.all
+    
+      # Get topics with posts authored by the current_user
+      
+      posts.each do |post|
+        topic = post.author
+        num_likes = post.num_likes
+        num_views = post.views
+        num_posts_in_topic = postsviewed.find_by(author_id: topic).view_count
+        post.score = 0.3 * num_likes + 0.2 * num_views + 0.000001 * (post.created_at - Time.now).to_i+ 0.5*num_posts_in_topic
+      end
+    
+      # Sort filtered posts in descending order of their scores
+      sorted_posts = posts.sort_by { |post| post.score }.reverse
+    
+      # Get top 10 recommended posts
+      recommended_posts = sorted_posts.take(10)
+    
+      render json: recommended_posts, include: [:author, :topic], methods: [:num_likes, :num_comments]
+    end
+    
+    
 
     
 
