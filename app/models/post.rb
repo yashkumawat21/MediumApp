@@ -34,4 +34,13 @@ class Post < ApplicationRecord
   def unlike(user)
     likes.where(user: user).destroy_all if liked_by?(user)
   end
+  has_many :saved_posts
+
+
+  def calculate_reading_time
+    words_per_minute = 100 # Assuming an average reading speed of 200 words per minute
+    word_count = self.text.split.size
+    total_minutes = (word_count.to_f / words_per_minute).ceil
+    self.reading_time = format("%02d:%02d", total_minutes, 0)
+  end
 end

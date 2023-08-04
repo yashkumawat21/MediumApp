@@ -7,17 +7,22 @@ class User < ApplicationRecord
     has_many :user_topic_views
   has_many :user_author_views
     has_many :viewed_posts, through: :user_post_views, source: :post
+    has_many :saved_posts
    
-    has_many :follows_as_follower, foreign_key: :follower_id, class_name: 'Follow'
-  has_many :follows_as_followee, foreign_key: :followee_id, class_name: 'Follow'
-  has_many :followers, through: :follows_as_followee, source: :follower
-  has_many :followees, through: :follows_as_follower, source: :followee
+    has_many :follower_relationships, class_name: 'Relationship', foreign_key: 'followee_user_id'
+  has_many :followers, through: :follower_relationships, source: :follower_user
+
+  has_many :followee_relationships, class_name: 'Relationship', foreign_key: 'follower_user_id'
+  has_many :followees, through: :followee_relationships, source: :followee_user
 
     validates :name, presence: true
     validates :email, presence: true, uniqueness: true
     validates :password_digest, presence: true
 
 
-   
+    def followed_authors
+      followees = followings_as_follower.map(&:followee_id)
+      User.where(id: followees)
+    end
    
 end

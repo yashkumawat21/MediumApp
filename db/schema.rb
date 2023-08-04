@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_04_141928) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_04_213838) do
   create_table "comments", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "post_id", null: false
@@ -19,6 +19,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_04_141928) do
     t.datetime "updated_at", null: false
     t.index ["post_id"], name: "index_comments_on_post_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
+  create_table "followings", force: :cascade do |t|
+    t.integer "follower_id", null: false
+    t.integer "followee_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["followee_id"], name: "index_followings_on_followee_id"
+    t.index ["follower_id"], name: "index_followings_on_follower_id"
   end
 
   create_table "follows", force: :cascade do |t|
@@ -50,8 +59,28 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_04_141928) do
     t.datetime "updated_at", null: false
     t.integer "views_count", default: 0
     t.float "score"
+    t.integer "reading_time"
+    t.boolean "draft", default: false
     t.index ["author_id"], name: "index_posts_on_author_id"
     t.index ["topic_id"], name: "index_posts_on_topic_id"
+  end
+
+  create_table "relationships", force: :cascade do |t|
+    t.integer "follower_user_id", null: false
+    t.integer "followee_user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["followee_user_id"], name: "index_relationships_on_followee_user_id"
+    t.index ["follower_user_id"], name: "index_relationships_on_follower_user_id"
+  end
+
+  create_table "saved_posts", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "post_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["post_id"], name: "index_saved_posts_on_post_id"
+    t.index ["user_id"], name: "index_saved_posts_on_user_id"
   end
 
   create_table "topics", force: :cascade do |t|
@@ -96,16 +125,23 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_04_141928) do
     t.string "password_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "image"
   end
 
   add_foreign_key "comments", "posts"
   add_foreign_key "comments", "users"
+  add_foreign_key "followings", "followees"
+  add_foreign_key "followings", "followers"
   add_foreign_key "follows", "followees"
   add_foreign_key "follows", "followers"
   add_foreign_key "likes", "posts"
   add_foreign_key "likes", "users"
   add_foreign_key "posts", "topics"
   add_foreign_key "posts", "users", column: "author_id"
+  add_foreign_key "relationships", "users", column: "followee_user_id"
+  add_foreign_key "relationships", "users", column: "follower_user_id"
+  add_foreign_key "saved_posts", "posts"
+  add_foreign_key "saved_posts", "users"
   add_foreign_key "user_author_views", "users"
   add_foreign_key "user_author_views", "users", column: "author_id"
   add_foreign_key "user_post_views", "posts"

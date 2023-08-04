@@ -1,25 +1,28 @@
 # app/controllers/posts_controller.rb
-class PostsController < ApplicationController
+class API::V1::PostsController < ApplicationController
     before_action :authenticate_user!, except: [:index, :search, :topposts]
   
     def index
-      @posts = Post.all
+      @posts = Post.where(draft: false)
       @posts = filter_by_author(params[:author]) if params[:author].present?
       @posts = filter_by_date(params[:date]) if params[:date].present?
       @posts = filter_by_likes(params[:likes]) if params[:likes].present?
       @posts = filter_by_comments(params[:comments]) if params[:comments].present?
+      @posts = sort_by_likes(@posts) if params[:sort] == 'likes'
+      @posts = sort_by_comments(@posts) if params[:sort] == 'comments'
   
-      render json: @posts, include: [:author, :topic], methods: [:num_likes, :num_comments, :views]
+      render json: @posts, include: [:author, :topic], methods: [:num_likes, :num_comments]
     end
     def search
       query = params[:query].strip.downcase
+
   
       @posts = Post.joins(:topic, :author).where(
         'lower(posts.title) LIKE :query OR lower(posts.text) LIKE :query OR lower(topics.name) LIKE :query OR lower(users.name) LIKE :query',
         query: "%#{query}%"
       ).distinct
   
-      render json: @posts, include: [:author, :topic],methods: [:num_likes, :num_comments, :views]
+      render json: @posts, include: [:author, :topic],methods: [:num_likes, :num_comments]
     end
     def show
       @post = Post.find(params[:id])
@@ -65,6 +68,9 @@ class PostsController < ApplicationController
   
     def create
       @post = current_user.posts.new(post_params)
+      @post.calculate_reading_time
+
+      @post.draft = true if params[:draft] == 'true'
   
       if @post.save
         render json: @post, status: :created
@@ -72,15 +78,34 @@ class PostsController < ApplicationController
         render json: { error: @post.errors.full_messages.join(', ') }, status: :unprocessable_entity
       end
     end
+
+    def getdrafts
+
+      render json: Post.where(draft: true)
+    end
+
   
     def update
       @post = current_user.posts.find(params[:id])
+      @post.draft = true if params[:draft] == 'true'
+      @post.draft = false if params[:draft] == 'false'
   
       if @post.update(post_params)
-        render json: @post
+        render json: @post, include: [:author, :topic],methods: [:num_likes, :num_comments, :views]
       else
         render json: { error: @post.errors.full_messages.join(', ') }, status: :unprocessable_entity
       end
+    end
+
+    def save_post_for_later
+      post = Post.find(params[:id])
+      current_user.saved_posts.create(post: post)
+      render json: { message: "Post saved for later" }
+    end
+
+    def get_saved_posts
+      saved_posts = current_user.saved_posts
+      render json: saved_posts, include: :post
     end
   
     def destroy
@@ -159,9 +184,17 @@ class PostsController < ApplicationController
 
   
     private
+
+    def sort_by_likes(posts)
+      posts.sort_by { |post| -post.likes.count }
+    end
+  
+    def sort_by_comments(posts)
+      posts.sort_by { |post| -post.comments.count }
+    end
   
     def post_params
-      params.require(:post).permit(:title, :text, :featured_image, :published_at, :topic_id)
+      params.require(:post).permit(:title, :text, :featured_image, :published_at, :topic_id, :draft)
     end
   
     def filter_by_author(author)

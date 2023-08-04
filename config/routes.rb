@@ -4,7 +4,13 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "articles#index"
   post '/login', to: 'auth#login'
-  resources :users, only: [:create, :index, :show]
+
+  resources :users, only: [:show , :create , :index] do
+    member do
+      post 'follow'
+      delete 'unfollow'
+    end
+  end
 
   resources :posts do
     resources :comments, only: [:create, :destroy]
@@ -18,7 +24,11 @@ Rails.application.routes.draw do
 
 
   get 'topposts', to: 'posts#topposts'
-  
+
+  get 'drafts', to: 'posts#getdrafts'
+
+  post 'posts/:id/saved', to: 'posts#save_post_for_later'
+  get 'posts/:id/saved_posts', to: 'posts#get_saved_posts'
   # Additional custom routes for filtering
   get '/posts/filter', to: 'posts#index'
 

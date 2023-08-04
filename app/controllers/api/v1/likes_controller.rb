@@ -1,5 +1,5 @@
 # app/controllers/likes_controller.rb
-class LikesController < ApplicationController
+class API::V1::LikesController < ApplicationController
     before_action :authenticate_user!
   
     def create
