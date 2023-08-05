@@ -1,0 +1,4 @@
+update_revenue_share:
+  cron: "0 0 * * *"  # Run every day at midnight
+  class: "UpdateRevenueShareJob"
+  queue: default

@@ -68,10 +68,11 @@ class Api::V1::ListsController < ApplicationController
         @post = Post.find(params[:post_id])
     
         if @list.posts.include?(@post)
+          @error_message = "List is already shared with that user."
           
         else
           @list.posts << @post
-          
+          @success_message = "List shared successfully with #{user.name}."
         end
     
         redirect_to @list

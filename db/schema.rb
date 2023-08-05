@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_05_074415) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_05_084431) do
   create_table "comments", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "post_id", null: false
@@ -95,6 +95,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_05_074415) do
     t.float "score"
     t.integer "reading_time"
     t.boolean "draft", default: false
+    t.float "revenue_share"
     t.index ["author_id"], name: "index_posts_on_author_id"
     t.index ["topic_id"], name: "index_posts_on_topic_id"
   end

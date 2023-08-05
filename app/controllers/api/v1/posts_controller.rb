@@ -29,6 +29,7 @@ class Api::V1::PostsController < ApplicationController
     end
     def show
       @post = Post.find(params[:id])
+      @post.calculate_reading_time
       user_post_view = current_user.user_post_views.find_by(post: @post)
       user_topic_view = current_user.user_topic_views.find_by(topic: @post.topic)
       user_author_view = current_user.user_author_views.find_by(author: @post.author)

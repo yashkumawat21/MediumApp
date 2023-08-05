@@ -72,6 +72,7 @@ GEM
     builder (3.2.4)
     choice (0.2.0)
     concurrent-ruby (1.2.2)
+    connection_pool (2.4.1)
     crass (1.0.6)
     date (3.3.3)
     debug (1.8.0)
@@ -153,11 +154,18 @@ GEM
       thor (~> 1.0)
       zeitwerk (~> 2.5)
     rake (13.0.6)
+    redis-client (0.15.0)
+      connection_pool
     reline (0.3.7)
       io-console (~> 0.5)
     rexml (3.2.6)
     ruby-graphviz (1.2.5)
       rexml
+    sidekiq (7.1.2)
+      concurrent-ruby (< 2)
+      connection_pool (>= 2.3.0)
+      rack (>= 2.2.4)
+      redis-client (>= 0.14.0)
     sqlite3 (1.6.3-x64-mingw-ucrt)
     stripe (8.6.0)
     thor (1.2.2)
@@ -184,6 +192,7 @@ DEPENDENCIES
   rack-cors
   rails (~> 7.0.6)
   rails-erd
+  sidekiq
   sqlite3 (~> 1.4)
   stripe
   tzinfo-data

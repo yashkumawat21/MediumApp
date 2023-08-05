@@ -1,7 +1,7 @@
 class Post < ApplicationRecord
   belongs_to :topic
 
-  self.per_page=2
+  self.per_page=4
   has_one_attached :file
 
   belongs_to :author, class_name: 'User', foreign_key: 'author_id'
@@ -44,5 +44,13 @@ class Post < ApplicationRecord
     word_count = self.text.split.size
     total_minutes = (word_count.to_f / words_per_minute).ceil
     self.reading_time = format("%02d:%02d", total_minutes, 0)
+  end
+
+
+  def update_revenue_share
+    # Calculate the revenue share based on the number of views
+    # For example, you can use a formula to calculate the share based on views and likes
+    self.revenue_share = (views * 0.01) + (num_likes * 0.05)
+    save
   end
 end
