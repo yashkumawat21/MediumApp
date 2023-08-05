@@ -7,10 +7,12 @@ class Api::V1::ListsController < ApplicationController
   
     def index
       @lists = current_user.lists
+      render json:@lists
     end
   
     def show
       @posts = @list.posts
+      render json:@posts
     end
   
     def new
@@ -21,7 +23,7 @@ class Api::V1::ListsController < ApplicationController
       @list = current_user.lists.build(list_params)
       
       if @list.save
-        redirect_to @list, notice: 'List was successfully created.'
+        redirect_to api_v1_list_url(@list), notice: 'List was successfully created.'
       else
         render :new
       end
@@ -32,7 +34,7 @@ class Api::V1::ListsController < ApplicationController
   
     def update
       if @list.update(list_params)
-        redirect_to @list, notice: 'List was successfully updated.'
+        redirect_to api_v1_list_url(@list), notice: 'List was successfully updated.'
       else
         render :edit
       end
@@ -57,10 +59,10 @@ class Api::V1::ListsController < ApplicationController
             @error_message = "List is already shared with that user."
         else
           @list.shared_users << user
-          @success_message = "List shared successfully with #{user.name}."
+          @success_message = "List shared successfully ."
         end
     
-        redirect_to @list
+        redirect_to api_v1_list_url(@list)
       end
 
       def add_post
@@ -72,10 +74,10 @@ class Api::V1::ListsController < ApplicationController
           
         else
           @list.posts << @post
-          @success_message = "List shared successfully with #{user.name}."
+          @success_message = "List shared successfully ."
         end
     
-        redirect_to @list
+        redirect_to api_v1_list_url(@list)
       end
   
     private
