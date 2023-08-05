@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import "./rightbar.css";
+import "./newuserinfo.css";
 import { Users } from "../../dummyData";
 import Online from "../online/Online";
-import { useNavigate } from "react-router-dom";
 
-export default function Rightbar({ profile }) {
+
+export default function Newuserinfo({ profile }) {
   const HomeRightbar = () => {
     return (
       <>
@@ -18,17 +18,12 @@ export default function Rightbar({ profile }) {
       </>
     );
   };
-  
-  const navigate=useNavigate();
+
   const ProfileRightbar = () => {
     const [editMode, setEditMode] = useState(false);
     const [dateOfBirth, setDateOfBirth] = useState(new Date());
-    const [place, setPlace] = useState("India");
-    const [articlesWritten, setArticlesWritten] = useState("Single");
-
-    const userinfo=()=>{
-    navigate("/User1");
-  }
+    const [place, setPlace] = useState("USA");
+    const [articlesWritten, setArticlesWritten] = useState("2");
   
     const handleEditClick = () => {
       setEditMode(true);
@@ -93,26 +88,18 @@ export default function Rightbar({ profile }) {
             </div>
           </div>
           <div className="buttonContainer">
-            {editMode ? (
-              <button className="rightbarButton" onClick={handleSaveClick}>
-                Save
-              </button>
-            ) : (
-              <button className="rightbarButton" onClick={handleEditClick}>
-                Edit
-              </button>
-            )}
+
           </div>
         </div>
         <h4 className="rightbarTitle">User friends</h4>
         <div className="rightbarFollowings">
-          <div className="rightbarFollowing" onClick={userinfo}>
+          <div className="rightbarFollowing">
             <img
-              src="assets/person/1.jpeg"
+              src="assets/person/7.jpeg"
               alt=""
               className="rightbarFollowingImg"
             />
-            <span className="rightbarFollowingName">Elisa</span>
+            <span className="rightbarFollowingName">Saurabh</span>
           </div>
           <div className="rightbarFollowing">
             <img
@@ -142,16 +129,6 @@ export default function Rightbar({ profile }) {
            
           </div>
         </div>
-        <div className="ExploreMore">
-              <img
-                className="ExploreMoreImg"
-                src="assets/post/13.jpg"
-                alt=""
-                height={250}
-                width={300}
-              />
-              </div>
-              <div className="ExploreMoreText">Click on the image above to explore more!</div>
       </>
     );
   };

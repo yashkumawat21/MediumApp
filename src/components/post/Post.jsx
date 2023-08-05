@@ -1,19 +1,43 @@
 import "./post.css";
-import { MoreVert } from "@material-ui/icons";
 import { Users } from "../../dummyData";
 import { useState } from "react";
 
 export default function Post({ post }) {
-  const [like,setLike] = useState(post.like)
-  const [isLiked,setIsLiked] = useState(false)
+  const [like, setLike] = useState(post.like);
+  const [isLiked, setIsLiked] = useState(false);
+  const [comments, setComments] = useState(post.comments || []);
+  const [newComment, setNewComment] = useState("");
+  const [isSaved, setIsSaved] = useState(false);
 
-  const likeHandler =()=>{
-    setLike(isLiked ? like-1 : like+1)
-    setIsLiked(!isLiked)
-  }
+  const likeHandler = () => {
+    setLike((prevLike) => prevLike + 1);
+    setIsLiked(!isLiked);
+  };
+
+  const handleCommentSubmit = (e) => {
+    e.preventDefault();
+    if (newComment.trim() !== "") {
+      setComments((prevComments) => [
+        ...prevComments,
+        { id: Date.now(), text: newComment },
+      ]);
+      setNewComment("");
+    }
+  };
+
+  const handleSaveForLater = () => {
+    setIsSaved(!isSaved);
+  };
+
   return (
     <div className="post">
       <div className="postWrapper">
+        <div className="postTitle">
+          <h2>{post?.title}</h2>
+        </div>
+        <div className="postHeading">
+          <h3>{post?.heading}</h3>
+        </div>
         <div className="postTop">
           <div className="postTopLeft">
             <img
@@ -27,7 +51,8 @@ export default function Post({ post }) {
             <span className="postDate">{post.date}</span>
           </div>
           <div className="postTopRight">
-            <MoreVert />
+            {/* Read article button */}
+            <button className="readButton">Read article</button>
           </div>
         </div>
         <div className="postCenter">
@@ -36,11 +61,30 @@ export default function Post({ post }) {
         </div>
         <div className="postBottom">
           <div className="postBottomLeft">
-            <img className="likeIcon" src="assets/like.png" onClick={likeHandler} alt="" />
-            <span className="postLikeCounter">{like} likes</span>
+            <button className="likeButton" onClick={likeHandler}>
+              {isLiked ? `${like} Likes` : `${like} Like`}
+            </button>
+          </div>
+          <div className="postComments">
+            {comments.map((comment) => (
+              <div key={comment.id} className="comment">
+                <span className="commentText">{comment.text}</span>
+              </div>
+            ))}
+            <form className="commentForm" onSubmit={handleCommentSubmit}>
+              <input
+                type="text"
+                placeholder="Add comment"
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+              />
+              <button type="submit">Post</button>
+            </form>
           </div>
           <div className="postBottomRight">
-            <span className="postCommentText">{post.comment} comments</span>
+            <button className="saveButton" onClick={handleSaveForLater}>
+              {isSaved ? "Saved" : "Save for Later"}
+            </button>
           </div>
         </div>
       </div>

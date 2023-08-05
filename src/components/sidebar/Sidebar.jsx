@@ -1,4 +1,5 @@
 import "./sidebar.css";
+import React, { useEffect, useState } from "react";
 import {
   RssFeed,
   Chat,
@@ -12,35 +13,37 @@ import {
 } from "@material-ui/icons";
 import { Users } from "../../dummyData";
 import CloseFriend from "../closeFriend/CloseFriend";
-
+import { useNavigate } from "react-router-dom";
 export default function Sidebar() {
+  const navigate=useNavigate();
+  const sendfeed=()=>{
+    navigate("/Updatedfeed");
+  }
   return (
     <div className="sidebar">
       <div className="sidebarWrapper">
         <ul className="sidebarList">
           <li className="sidebarListItem">
-            <RssFeed className="sidebarIcon" />
-            <span className="sidebarListItemText">Feed</span>
+              <RssFeed className="sidebarIcon" />
+              <span className="sidebarListItemText" onClick={sendfeed}>Feed</span>
           </li>
           <li className="sidebarListItem">
-            <Bookmark className="sidebarIcon" />
-            <span className="sidebarListItemText">Saved</span>
+            <a href="/saved" className="sidebarLink">
+              <Bookmark className="sidebarIcon" />
+              <span className="sidebarListItemText">Saved</span>
+            </a>
           </li>
           <li className="sidebarListItem">
-            <HelpOutline className="sidebarIcon" />
-            <span className="sidebarListItemText">Important Quotations</span>
+            <a href="/drafts" className="sidebarLink">
+              <WorkOutline className="sidebarIcon" />
+              <span className="sidebarListItemText">Drafts</span>
+            </a>
           </li>
           <li className="sidebarListItem">
-            <WorkOutline className="sidebarIcon" />
-            <span className="sidebarListItemText">Drafts</span>
-          </li>
-          <li className="sidebarListItem">
-            <Event className="sidebarIcon" />
-            <span className="sidebarListItemText">History</span>
-          </li>
-          <li className="sidebarListItem">
-            <School className="sidebarIcon" />
-            <span className="sidebarListItemText">Learn more!</span>
+            <a href="/history" className="sidebarLink">
+              <Event className="sidebarIcon" />
+              <span className="sidebarListItemText">History</span>
+            </a>
           </li>
         </ul>
         <hr className="sidebarHr" />

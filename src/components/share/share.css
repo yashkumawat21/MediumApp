@@ -1,6 +1,6 @@
 .share {
-  width: 100%;
-  height: 170px;
+  /* width: 100%; */
+
   border-radius: 10px;
   -webkit-box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
   box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
@@ -12,7 +12,7 @@
 
 .shareWrapper {
   width: 100%;
-  max-width: 600px;
+  max-width: 1000px;
   background-color: white;
   border-radius: 10px;
   padding: 20px;
@@ -33,15 +33,12 @@
   margin-right: 10px;
 }
 
+.shareInputTitle,
 .shareInput {
   border: none;
-  width: 80%;
-  padding-top:15px;
-  padding-left:20px;
-}
-
-.shareInput:focus {
-  outline: none;
+  width: 500px;
+  padding-top: 15px;
+  padding-left: 20px;
 }
 
 .shareHr {
@@ -57,57 +54,64 @@
   border-top: 1px solid #f0f2f5;
 }
 
-.shareOptions{
-    display: flex;
-    margin-left: 20px;
-    align-items: center;
+.shareOptions {
+  display: flex;
+  margin-left: 20px;
+  align-items: center;
 }
 
-.shareOption{
-    display: flex;
-    align-items: center;
-    margin-right: 15px;
-    cursor: pointer;
+.shareOption {
+  display: flex;
+  align-items: center;
+  margin-right: 15px;
+  cursor: pointer;
 }
 
-.shareIcon{
-    font-size: 18px;
-    margin-right: 3px;
+.shareIcon {
+  font-size: 18px;
+  margin-right: 3px;
 }
 
-.shareOptionText{
+.shareOptionText {
   font-size: 14px;
   font-weight: 500;
   margin-left: 5px;
 }
 
-.shareButton{
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    background-color: green;
-    font-weight: 500;
-    margin-right: 20px;
-    cursor: pointer;
-    color: white;
-    outline: none;
-    font-weight: bold;
+.shareButton {
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  background-color: green;
+  font-weight: 500;
+  margin-right: 20px;
+  cursor: pointer;
+  color: white;
+  outline: none;
+  font-weight: bold;
 }
 
 .post {
-  width: 100%;
-  max-width: 600px;
+  width: 1000px;
   background-color: white;
   border-radius: 10px;
   padding: 20px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   margin-top: 20px;
+  position: relative;
 }
 
 .postWrapper {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  position: relative;
+  max-width: auto;
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  margin-top: 20px;
 }
 
 .postTop {
@@ -132,4 +136,87 @@
 
 .postContent {
   font-size: 16px;
+  width: 100%;
+}
+
+.postActions {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+
+.postButtonEdit,
+.postButtonDelete,
+.postButtonSaveLater,
+.postButtonSave,
+.postButtonCancelEdit {
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+.postpostLikeButton {
+  border: none;
+  padding: 8px 12px;
+
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+.postButtonEdit {
+  background-color: blue;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.postButtonSave {
+  background-color: rgb(83, 156, 128);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.postButtonCancelEdit {
+  background-color: rgb(199, 74, 74);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.postButtonDelete {
+  background-color: red;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.postButtonSaveLater {
+  background-color: #888;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.postLikeButton {
+  background-color: #14e648;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.postDate {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 12px;
+  color: #888;
+}
+
+.postAuthor {
+  font-size: 14px;
+  color: rgba(199, 194, 194, 0.6);
+  margin-left: 10px;
 }

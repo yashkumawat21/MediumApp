@@ -1,0 +1,9 @@
+.history-container {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    background-color: rgb(255, 228, 196);
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}

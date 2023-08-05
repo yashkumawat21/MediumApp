@@ -2,7 +2,7 @@ import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import "./signup.css";
-
+import { useNavigate } from "react-router-dom";
 const SignUp = () => {
   const initialValues = {
     name: "",
@@ -20,10 +20,14 @@ const SignUp = () => {
     email: Yup.string().email("Invalid email").required("Required"),
   });
 
+
+  const navigate=useNavigate();
   const handleSubmit = (values, { setSubmitting }) => {
     // Your form submission logic here
     console.log("Form Values:", values); // Display all form details in the console
     setSubmitting(false);
+    navigate("/Updatedfeed");
+
   };
 
   return (

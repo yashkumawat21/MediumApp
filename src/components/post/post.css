@@ -1,12 +1,8 @@
 .post {
   width: 100%;
   border-radius: 10px;
-  -webkit-box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
   box-shadow: 0px 0px 16px -8px rgba(0, 0, 0, 0.68);
   margin: 30px 0;
-}
-
-.postWrapper {
   padding: 10px;
 }
 
@@ -34,45 +30,162 @@
   margin: 0 10px;
 }
 
-.postDate{
-    font-size: 12px;
+.postDate {
+  font-size: 12px;
 }
 
-.postCenter{
-    margin: 20px 0;
+.postCenter {
+  margin: 20px 0;
 }
 
-.postImg{
-    margin-top: 20px;
-    width: 100%;
-    max-height: 500px;
-    object-fit: contain;
+.postImg {
+  margin-top: 20px;
+  width: 100%;
+  max-height: 500px;
+  object-fit: contain;
 }
 
-.postBottom{
+.postBottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.postBottomLeft {
+  display: flex;
+  align-items: center;
+}
+
+.likeIcon {
+  width: 24px;
+  height: 24px;
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+.postLikeCounter {
+  font-size: 15px;
+  margin-right: 10px;
+}
+
+.likeButton {
+  background-color: #36d430;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  font-weight: 500;
+  padding: 5px 10px;
+}
+
+.saveButton {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  background-color: #2e4bcc;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-bottom: 30px;
+  margin-right: 20px;
+  position: absolute;
+  bottom: -10;
+  right: 0;
+}
+
+.saveButton:hover {
+  background-color: #27ae60;
+}
+
+.postComments {
+  width: 100%;
+}
+
+.comment {
+  background-color: #f0f0f0;
+  border-radius: 5px;
+  margin-bottom: 5px;
+  padding: 5px;
+}
+
+.commentText {
+  color: #333;
+}
+
+.commentForm {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.commentForm input {
+  flex: 1;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.commentForm button {
+  background-color: #fff;
+  border: none;
+  color: #555;
+  cursor: pointer;
+  font-weight: 500;
+  margin-left: 10px;
+  padding: 5px;
+}
+
+.commentForm button:hover {
+  color: #ff5e3a;
+}
+
+@media (max-width: 768px) {
+  .postTop {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .postTopRight {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+  }
+
+
+  .postProfileImg {
+    margin-bottom: 10px;
+  }
+
+  .postCenter {
+    text-align: center;
+  }
+
+  .postBottom {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .likeButton {
+    margin-right: 0;
+  }
+
+  .saveButton {
+    margin-left: auto;
+  }
 }
 
-.postBottomLeft{
-    display: flex;
-    align-items: center;   
+.readButton {
+  background-color: #36d430;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  font-weight: 500;
+  padding: 8px 12px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.likeIcon{
-    width: 24px;
-    height: 24px;
-    margin-right: 5px;
-    cursor: pointer;
-}
-
-.postLikeCounter{
-    font-size: 15px;
-}
-
-.postCommentText{
-    cursor: pointer;
-    border-bottom: 1px dashed gray;
-    font-size: 15px;
+.readButton:hover {
+  background-color: #27ae60;
+  transform: translateY(-2px);
 }
