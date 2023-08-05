@@ -1,9 +1,12 @@
 # app/controllers/posts_controller.rb
-class API::V1::PostsController < ApplicationController
+
+require 'will_paginate/array'
+
+class Api::V1::PostsController < ApplicationController
     before_action :authenticate_user!, except: [:index, :search, :topposts]
   
     def index
-      @posts = Post.where(draft: false)
+      @posts = Post.where(draft: false).paginate(page: params[:page])
       @posts = filter_by_author(params[:author]) if params[:author].present?
       @posts = filter_by_date(params[:date]) if params[:date].present?
       @posts = filter_by_likes(params[:likes]) if params[:likes].present?

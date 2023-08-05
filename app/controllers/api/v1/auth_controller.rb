@@ -1,5 +1,5 @@
 # app/controllers/auth_controller.rb
-class API::V1::AuthController < ApplicationController
+class Api::V1::AuthController < ApplicationController
     def login
       user = User.find_by(email: params[:email])
   

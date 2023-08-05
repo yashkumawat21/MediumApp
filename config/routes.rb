@@ -1,8 +1,11 @@
 Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
-  # Defines the root path route ("/")
-  # root "articles#index"
+  namespace :api do
+    namespace :v1 do
+      
+      # Add other API routes here
+       # root "articles#index"
   post '/login', to: 'auth#login'
 
   resources :users, only: [:show , :create , :index] do
@@ -41,4 +44,10 @@ Rails.application.routes.draw do
   # Additional routes for editing and deleting posts
   put '/posts/:id', to: 'posts#update'
   delete '/posts/:id', to: 'posts#destroy'
+ 
+  # Defines the root path route ("/")
+
+end
+end
+ 
 end

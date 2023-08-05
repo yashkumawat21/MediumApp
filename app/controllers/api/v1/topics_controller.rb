@@ -1,5 +1,5 @@
 # app/controllers/topics_controller.rb
-class API::V1::TopicsController < ApplicationController
+class Api::V1::TopicsController < ApplicationController
     before_action :authenticate_user!, except: [:index]
   
     def index

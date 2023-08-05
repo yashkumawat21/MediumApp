@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_04_213838) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_05_054239) do
   create_table "comments", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "post_id", null: false
@@ -46,6 +46,32 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_04_213838) do
     t.datetime "updated_at", null: false
     t.index ["post_id"], name: "index_likes_on_post_id"
     t.index ["user_id"], name: "index_likes_on_user_id"
+  end
+
+  create_table "list_posts", force: :cascade do |t|
+    t.integer "list_id", null: false
+    t.integer "post_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["list_id"], name: "index_list_posts_on_list_id"
+    t.index ["post_id"], name: "index_list_posts_on_post_id"
+  end
+
+  create_table "list_sharings", force: :cascade do |t|
+    t.integer "list_id", null: false
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["list_id"], name: "index_list_sharings_on_list_id"
+    t.index ["user_id"], name: "index_list_sharings_on_user_id"
+  end
+
+  create_table "lists", force: :cascade do |t|
+    t.string "name"
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_lists_on_user_id"
   end
 
   create_table "posts", force: :cascade do |t|
@@ -136,6 +162,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_04_213838) do
   add_foreign_key "follows", "followers"
   add_foreign_key "likes", "posts"
   add_foreign_key "likes", "users"
+  add_foreign_key "list_posts", "lists"
+  add_foreign_key "list_posts", "posts"
+  add_foreign_key "list_sharings", "lists"
+  add_foreign_key "list_sharings", "users"
+  add_foreign_key "lists", "users"
   add_foreign_key "posts", "topics"
   add_foreign_key "posts", "users", column: "author_id"
   add_foreign_key "relationships", "users", column: "followee_user_id"

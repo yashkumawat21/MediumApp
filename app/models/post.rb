@@ -1,5 +1,7 @@
 class Post < ApplicationRecord
   belongs_to :topic
+
+  self.per_page=2
   
 
   belongs_to :author, class_name: 'User', foreign_key: 'author_id'

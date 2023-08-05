@@ -1,5 +1,5 @@
 # app/controllers/users_controller.rb
-class API::V1::UsersController < ApplicationController
+class Api::V1::UsersController < ApplicationController
   before_action :authenticate_user!, except: [:create , :show]
     def create
       user = User.new(user_params)

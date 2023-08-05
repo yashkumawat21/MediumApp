@@ -1,5 +1,5 @@
 # app/controllers/comments_controller.rb
-class API::V1::CommentsController < ApplicationController
+class Api::V1::CommentsController < ApplicationController
     before_action :authenticate_user!
   
     def create

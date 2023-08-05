@@ -1,6 +1,10 @@
 class User < ApplicationRecord
     has_secure_password
     has_many :posts, foreign_key: 'author_id', dependent: :destroy
+    has_many :lists
+  has_many :list_posts, through: :lists
+  has_many :list_sharings
+  has_many :shared_lists, through: :list_sharings, source: :list
     has_many :likes, dependent: :destroy
     has_many :comments, dependent: :destroy ,  class_name: 'Comment'
     has_many :user_post_views
