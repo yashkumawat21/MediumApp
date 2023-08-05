@@ -53,6 +53,8 @@ class Api::V1::PostsController < ApplicationController
         current_user.user_topic_views.create(topic: @post.topic, view_count: 1)
         
       end
+
+    
       if user_author_view
         # User has viewed the post before, increment the view count in UserPostView
         
@@ -67,6 +69,9 @@ class Api::V1::PostsController < ApplicationController
       @post.increment!(:views_count)
       render json: @post, include: [:author, :topic],methods: [:num_likes, :num_comments, :views]
 
+    end
+
+    def upload_file
     end
   
     def create

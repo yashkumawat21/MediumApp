@@ -159,6 +159,7 @@ GEM
     ruby-graphviz (1.2.5)
       rexml
     sqlite3 (1.6.3-x64-mingw-ucrt)
+    stripe (8.6.0)
     thor (1.2.2)
     timeout (0.4.0)
     tzinfo (2.0.6)
@@ -184,6 +185,7 @@ DEPENDENCIES
   rails (~> 7.0.6)
   rails-erd
   sqlite3 (~> 1.4)
+  stripe
   tzinfo-data
   will_paginate
 

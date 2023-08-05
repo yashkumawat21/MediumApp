@@ -1,6 +1,9 @@
 # app/controllers/lists_controller.rb
-class ListsController < ApplicationController
+class Api::V1::ListsController < ApplicationController 
     before_action :authenticate_user!
+    before_action :set_list, only: [:show, :edit, :update, :destroy]
+    
+
   
     def index
       @lists = current_user.lists
@@ -16,6 +19,7 @@ class ListsController < ApplicationController
   
     def create
       @list = current_user.lists.build(list_params)
+      
       if @list.save
         redirect_to @list, notice: 'List was successfully created.'
       else
@@ -39,20 +43,35 @@ class ListsController < ApplicationController
       redirect_to lists_url, notice: 'List was successfully destroyed.'
     end
 
-    def share
-        @list = current_user.lists.find(params[:id])
-        @users = User.where.not(id: current_user.id)
+    def shared_lists
+        user = User.find(params[:user_id])
+        render json: user.shared_lists
       end
+      
     
       def create_share
-        @list = current_user.lists.find(params[:id])
+        @list = current_user.lists.find(params[:list_id])
         user = User.find(params[:user_id])
     
         if @list.shared_users.include?(user)
-          flash[:alert] = "List is already shared with that user."
+            @error_message = "List is already shared with that user."
         else
           @list.shared_users << user
-          flash[:notice] = "List shared successfully with #{user.name}."
+          @success_message = "List shared successfully with #{user.name}."
+        end
+    
+        redirect_to @list
+      end
+
+      def add_post
+        @list = current_user.lists.find(params[:list_id])
+        @post = Post.find(params[:post_id])
+    
+        if @list.posts.include?(@post)
+          
+        else
+          @list.posts << @post
+          
         end
     
         redirect_to @list

@@ -23,6 +23,9 @@ Rails.application.routes.draw do
   # config/routes.rb
   resources :follows, only: [:create, :destroy]
 
+ 
+
+
 
 
 
@@ -44,10 +47,19 @@ Rails.application.routes.draw do
   # Additional routes for editing and deleting posts
   put '/posts/:id', to: 'posts#update'
   delete '/posts/:id', to: 'posts#destroy'
+
+  resources :lists, only: [:index, :show, :new, :create, :edit, :update, :destroy] do
+  
+  end
+  post 'lists/:list_id/add_post/:post_id', to: 'lists#add_post'
+  post 'lists/:list_id/create_share/:user_id', to: 'lists#create_share'
+  get 'lists/:user_id/shared_list', to: 'lists#shared_lists'
+  
+  post 'create_payment', to: 'payments#create_payment'
  
   # Defines the root path route ("/")
 
 end
 end
- 
+
 end

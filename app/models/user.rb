@@ -2,6 +2,7 @@ class User < ApplicationRecord
     has_secure_password
     has_many :posts, foreign_key: 'author_id', dependent: :destroy
     has_many :lists
+    has_many :orders
   has_many :list_posts, through: :lists
   has_many :list_sharings
   has_many :shared_lists, through: :list_sharings, source: :list
