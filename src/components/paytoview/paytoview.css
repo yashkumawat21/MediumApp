@@ -1,0 +1,36 @@
+.popupContainer {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #f0f2f5;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 800px; /* Set the width of the popup container */
+  }
+  
+  .box {
+    width: 300px; /* Set the width of each box */
+    height: 450px; /* Set the height of each box */
+    flex: 1; /* Set each box to take equal space */
+    margin: 0 10px;
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    cursor: pointer; /* Add cursor pointer to indicate they are clickable */
+    transition: transform 0.3s ease; 
+  }
+  
+  .box:hover {
+    transform: translateY(-10px); /* Move the box up slightly on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Add box shadow on hover */
+  }
