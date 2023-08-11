@@ -10,7 +10,7 @@ Topic.create(name: "Art")
 User.create(name: "John Doe", email: "john@example.com", password: "password")
 User.create(name: "Jane Smith", email: "jane@example.com", password: "password")
 # Add more users as needed
-
+user=User.find(2)
 # Add seed data for posts
 Post.create(title: "Introduction to Rails", text: "Rails is a web development framework...", topic_id: 1, author_id: 1)
 Post.create(title: "Machine Learning Basics", text: "Machine learning is a subset of artificial intelligence...", topic_id: 2, author_id: 2)

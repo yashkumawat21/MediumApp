@@ -30,45 +30,54 @@ class Api::V1::PostsController < ApplicationController
     def show
       @post = Post.find(params[:id])
       @post.calculate_reading_time
-      user_post_view = current_user.user_post_views.find_by(post: @post)
-      user_topic_view = current_user.user_topic_views.find_by(topic: @post.topic)
-      user_author_view = current_user.user_author_views.find_by(author: @post.author)
-
-      if user_post_view
-        # User has viewed the post before, increment the view count in UserPostView
-        user_post_view.increment!(:views_count)
-       
-      else
-        # User is viewing the post for the first time, create a new UserPostView record
-        current_user.user_post_views.create(post: @post, views_count: 1)
-       
-      end
-      if user_topic_view
-        # User has viewed the post before, increment the view count in UserPostView
-       
-        user_topic_view.increment!(:view_count)
+      @user = current_user
+      if !@user.can_view_post? && !(@post.user == @user)
+        render json: "You have reached your daily limit of posts."
         
       else
-        # User is viewing the post for the first time, create a new UserPostView record
-       
-        current_user.user_topic_views.create(topic: @post.topic, view_count: 1)
         
-      end
-
-    
-      if user_author_view
-        # User has viewed the post before, increment the view count in UserPostView
-        
-        user_author_view.increment!(:view_count)
-      else
-        # User is viewing the post for the first time, create a new UserPostView record
-        
-        current_user.user_author_views.create(author: @post.author, view_count: 1)
-      end
+        user_post_view = current_user.user_post_views.find_by(post: @post)
+        user_topic_view = current_user.user_topic_views.find_by(topic: @post.topic)
+        user_author_view = current_user.user_author_views.find_by(author: @post.author)
   
-      # Increment the views_count for the post (separately from UserPostView)
-      @post.increment!(:views_count)
-      render json: @post, include: [:author, :topic],methods: [:num_likes, :num_comments, :views]
+        if user_post_view
+          # User has viewed the post before, increment the view count in UserPostView
+          user_post_view.increment!(:views_count)
+         
+        else
+          # User is viewing the post for the first time, create a new UserPostView record
+          current_user.user_post_views.create(post: @post, views_count: 1)
+          @user.increment_posts_viewed unless @post.user == current_user
+         
+        end
+        if user_topic_view
+          # User has viewed the post before, increment the view count in UserPostView
+         
+          user_topic_view.increment!(:view_count)
+          
+        else
+          # User is viewing the post for the first time, create a new UserPostView record
+         
+          current_user.user_topic_views.create(topic: @post.topic, view_count: 1)
+          
+        end
+  
+      
+        if user_author_view
+          # User has viewed the post before, increment the view count in UserPostView
+          
+          user_author_view.increment!(:view_count)
+        else
+          # User is viewing the post for the first time, create a new UserPostView record
+          
+          current_user.user_author_views.create(author: @post.author, view_count: 1)
+        end
+    
+        # Increment the views_count for the post (separately from UserPostView)
+        @post.increment!(:views_count)
+        render json: @post, include: [:author, :topic],methods: [:num_likes, :num_comments, :views]
+      end
+     
 
     end
 
@@ -187,6 +196,28 @@ class Api::V1::PostsController < ApplicationController
       render json: recommended_posts, include: [:author, :topic], methods: [:num_likes, :num_comments]
     end
     
+    def previousversions
+      @post = Post.find(params[:post_id])
+      @revisions = @post.versions
+    
+      previous_versions = []
+    
+      @revisions.each do |revision|
+        previous_post = revision.reify
+        if previous_post
+          previous_versions << {
+            id: previous_post.id,
+            title: previous_post.title,
+            content: previous_post.content,
+            published_at: previous_post.published_at&.iso8601
+            # Add more attributes as needed
+          }
+        end
+      end
+    
+      render json: previous_versions
+    end
+
     
 
     

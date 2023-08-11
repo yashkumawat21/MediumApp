@@ -4,6 +4,8 @@ class Post < ApplicationRecord
   self.per_page=4
   has_one_attached :file
 
+  has_paper_trail
+
   belongs_to :author, class_name: 'User', foreign_key: 'author_id'
   has_many :likes, dependent: :destroy
   has_many :comments, dependent: :destroy ,  class_name: 'Comment'
@@ -13,7 +15,7 @@ class Post < ApplicationRecord
   validates :text, presence: true
   validates :published_at, presence: true
 
-
+ 
   def num_likes
     likes.count
   end
