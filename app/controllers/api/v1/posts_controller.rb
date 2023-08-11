@@ -1,7 +1,8 @@
 # app/controllers/posts_controller.rb
 
 require 'will_paginate/array'
-
+require 'yaml'
+require 'json'
 class Api::V1::PostsController < ApplicationController
     before_action :authenticate_user!, except: [:index, :search, :topposts]
   
@@ -198,25 +199,31 @@ class Api::V1::PostsController < ApplicationController
     
     def previousversions
       @post = Post.find(params[:post_id])
-      @revisions = @post.versions
-    
-      previous_versions = []
-    
-      @revisions.each do |revision|
-        previous_post = revision.reify
-        if previous_post
-          previous_versions << {
-            id: previous_post.id,
-            title: previous_post.title,
-            content: previous_post.content,
-            published_at: previous_post.published_at&.iso8601
-            # Add more attributes as needed
-          }
-        end
+   @versions = @post.versions
+
+    previous_versions = []
+
+    @versions.each do |version|
+      previous_post_data = version.reify
+     
+ if previous_post_data
+        serialized_previous_post = {
+          author_id: previous_post_data.author_id,
+          title: previous_post_data.title,
+          content: previous_post_data.text,
+         topic_id: previous_post_data.topic_id,
+          created_at: previous_post_data.updated_at
+
+        }
+
+        previous_versions << serialized_previous_post
       end
-    
-      render json: previous_versions
     end
+
+    render json: previous_versions
+
+    
+  end
 
     
 
