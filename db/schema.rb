@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_05_084431) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_12_101535) do
   create_table "comments", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "post_id", null: false
@@ -79,6 +79,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_05_084431) do
     t.integer "amount"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "charge_id"
     t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
@@ -116,6 +117,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_05_084431) do
     t.datetime "updated_at", null: false
     t.index ["post_id"], name: "index_saved_posts_on_post_id"
     t.index ["user_id"], name: "index_saved_posts_on_user_id"
+  end
+
+  create_table "subscriptions", force: :cascade do |t|
+    t.string "name"
+    t.decimal "price"
+    t.integer "posts_per_day"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "topics", force: :cascade do |t|
@@ -161,6 +170,20 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_05_084431) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "image"
+    t.integer "posts_viewed_today", default: 0
+    t.integer "subscription_id", default: 1, null: false
+    t.decimal "revenue_share", precision: 10, scale: 2, default: "0.0"
+    t.index ["subscription_id"], name: "index_users_on_subscription_id"
+  end
+
+  create_table "versions", force: :cascade do |t|
+    t.string "item_type", null: false
+    t.bigint "item_id", null: false
+    t.string "event", null: false
+    t.string "whodunnit"
+    t.text "object", limit: 1073741823
+    t.datetime "created_at"
+    t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
   add_foreign_key "comments", "posts"
@@ -189,4 +212,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_05_084431) do
   add_foreign_key "user_post_views", "users"
   add_foreign_key "user_topic_views", "topics"
   add_foreign_key "user_topic_views", "users"
+  add_foreign_key "users", "subscriptions"
 end

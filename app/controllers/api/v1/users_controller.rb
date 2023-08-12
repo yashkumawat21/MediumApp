@@ -34,6 +34,19 @@ class Api::V1::UsersController < ApplicationController
     current_user.followers.delete(@user)
     render json: { message: "Successfully unfollowed user with ID #{params[:id]}" }
   end
+
+  def change_subscription
+    @user = current_user # Implement your user authentication logic
+    @subscription = Subscription.find(params[:subscription_id])
+
+    if @user.update(subscription: @subscription)
+      render json: "Subscription changed successfully."
+    else
+      render json: "Failed to change subscription."
+    end
+
+    
+  end
     private
   
     def user_params

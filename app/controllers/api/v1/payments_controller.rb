@@ -24,14 +24,29 @@ class Api::V1::PaymentsController < ApplicationController
   
       # Create an order in your database
       order = current_user.orders.create(
-        amount: amount
+        amount: amount,
+        charge_id: charge.id
       )
+      payment_status = nil
+      if charge.paid
+        payment_status = 'paid'
+      elsif charge.payment_failure_code
+        payment_status = 'failed'
+      else
+        payment_status = 'pending'
+      end
   
       # Return a success response to the client
-      render json: { success: true, message: 'Payment successful', order_id: order.id }
+      render json: { success: true, message: 'Payment successful', order_id: order.id, payment_status: payment_status }
     rescue Stripe::CardError => e
       # Handle card errors
       render json: { success: false, message: e.message }
     end
+
+
+ 
+      
+  
+ 
   end
   

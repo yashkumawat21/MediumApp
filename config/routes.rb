@@ -7,6 +7,7 @@ Rails.application.routes.draw do
       # Add other API routes here
        # root "articles#index"
   post '/login', to: 'auth#login'
+  root 'posts#index'
 
   resources :users, only: [:show , :create , :index] do
     member do
@@ -14,7 +15,8 @@ Rails.application.routes.draw do
       delete 'unfollow'
     end
   end
-
+  get 'posts/:post_id/getversions', to: 'posts#previousversions'
+  post 'change_subscription/:subscription_id', to: 'users#change_subscription', as: :change_subscription
   resources :posts do
     resources :comments, only: [:create, :destroy]
     resources :likes, only: [:create, :destroy]
