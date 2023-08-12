@@ -13,6 +13,8 @@ class UpdateRevenueShareJob < ApplicationJob
     users.each do |user|
       user_revenue = user.total_revenue
       user.update(revenue_share: user_revenue)
+
     end
+    User.update_all(posts_viewed_today: 0)
   end
 end

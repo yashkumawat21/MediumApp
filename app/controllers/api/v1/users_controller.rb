@@ -16,6 +16,8 @@ class Api::V1::UsersController < ApplicationController
      render json: User.all
   end
   
+
+  #this will show the followed authors by user
   def show
     @user = User.find(params[:id])
     # Load the posts of the user's followed authors
@@ -34,6 +36,8 @@ class Api::V1::UsersController < ApplicationController
     current_user.followers.delete(@user)
     render json: { message: "Successfully unfollowed user with ID #{params[:id]}" }
   end
+
+  # change subscription from free to 3,5,10 posts perday
 
   def change_subscription
     @user = current_user # Implement your user authentication logic

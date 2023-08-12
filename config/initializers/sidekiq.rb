@@ -1,6 +1,6 @@
 
 require 'sidekiq'
-require 'sidekiq/web'
+require 'sidekiq/web' 
 
 schedule_file = "config/schedule.yml"
 

@@ -52,6 +52,7 @@ class Post < ApplicationRecord
   def update_revenue_share
     # Calculate the revenue share based on the number of views
     # For example, you can use a formula to calculate the share based on views and likes
+    # In place of 0.01 and 0.05 we can use other factors which will depend on company
     self.revenue_share = (views * 0.01) + (num_likes * 0.05)
     save
   end
