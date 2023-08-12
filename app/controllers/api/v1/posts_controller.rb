@@ -31,6 +31,8 @@ class Api::V1::PostsController < ApplicationController
     def show
       @post = Post.find(params[:id])
       @post.calculate_reading_time
+      @post.update_revenue_share
+      current_user.update_user_revenue
       @user = current_user
       if !@user.can_view_post? && !(@post.user == @user)
         render json: "You have reached your daily limit of posts."
@@ -197,6 +199,8 @@ class Api::V1::PostsController < ApplicationController
       render json: recommended_posts, include: [:author, :topic], methods: [:num_likes, :num_comments]
     end
     
+
+    #code for revision history 
     def previousversions
       @post = Post.find(params[:post_id])
    @versions = @post.versions
@@ -218,8 +222,20 @@ class Api::V1::PostsController < ApplicationController
 
         previous_versions << serialized_previous_post
       end
-    end
+     
 
+    end
+    # current post
+    serialized_previous_post = {
+      author_id: @post.author_id,
+      title: @post.title,
+      content: @post.text,
+     topic_id: @post.topic_id,
+      created_at: @post.updated_at
+
+    }
+
+    previous_versions << serialized_previous_post
     render json: previous_versions
 
     
