@@ -1,9 +1,8 @@
+# config/initializers/sidekiq.rb
+require 'sidekiq/cron'
 
-require 'sidekiq'
-require 'sidekiq/web'
+# Load the schedule.yml file
+schedule_file = Rails.root.join('config', 'schedule.yml')
+schedule_hash = YAML.load_file(schedule_file)
 
-schedule_file = "config/schedule.yml"
-
-if File.exist?(schedule_file) && Sidekiq.server?
-  Sidekiq::Cron::Job.load_from_hash YAML.load_file(schedule_file)
-end
+Sidekiq::Cron::Job.load_from_hash(schedule_hash)

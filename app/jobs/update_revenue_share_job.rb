@@ -1,5 +1,5 @@
 class UpdateRevenueShareJob < ApplicationJob
-  queue_as :default
+  include Sidekiq::Worker
 
   def perform
     # Calculate and update the revenue share for each post
@@ -14,5 +14,10 @@ class UpdateRevenueShareJob < ApplicationJob
       user_revenue = user.total_revenue
       user.update(revenue_share: (user_revenue / total_revenue))
     end
+
+    User.update_all(posts_viewed_today: 0)
   end
+
+
+  
 end
