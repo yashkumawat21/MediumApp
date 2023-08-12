@@ -9,10 +9,10 @@ class UpdateRevenueShareJob < ApplicationJob
 
     # Calculate and distribute the revenue to the creators
     users = User.all
-    total_revenue = users.sum(&:total_revenue)
+   
     users.each do |user|
       user_revenue = user.total_revenue
-      user.update(revenue_share: (user_revenue / total_revenue))
+      user.update(revenue_share: user_revenue)
     end
   end
 end
