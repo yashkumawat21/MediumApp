@@ -3,3 +3,9 @@ update_revenue_share:
   class: "UpdateRevenueShareJob"
   queue: default
 
+
+
+reset_posts_viewed_today:
+  cron: '0 0 * * *' # Runs every day at midnight
+  class: ResetPostsViewedTodayJob
+  queue: default

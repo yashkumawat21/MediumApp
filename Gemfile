@@ -20,7 +20,7 @@ gem 'stripe'
 gem 'sidekiq'
 # Use Redis adapter to run Action Cable in production
 # gem "redis", "~> 4.0"
-gem 'sidekiq-cron'
+
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
@@ -38,7 +38,7 @@ gem 'paper_trail'
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 
-gem 'whenever', require: false
+
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem "rack-cors"
 gem 'jwt'

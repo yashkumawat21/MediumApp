@@ -31,7 +31,6 @@ class Api::V1::PostsController < ApplicationController
     def show
       @post = Post.find(params[:id])
       @post.calculate_reading_time
-      @post.update_revenue_share
       @user = current_user
       if !@user.can_view_post? && !(@post.user == @user)
         render json: "You have reached your daily limit of posts."
