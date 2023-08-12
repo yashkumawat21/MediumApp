@@ -32,6 +32,8 @@ class Api::V1::PostsController < ApplicationController
       @post = Post.find(params[:id])
       @post.calculate_reading_time
       @post.update_revenue_share
+         # I have also tryed another method another method
+      # by creating job
       current_user.update_user_revenue
       @user = current_user
       if !@user.can_view_post? && !(@post.user == @user)
