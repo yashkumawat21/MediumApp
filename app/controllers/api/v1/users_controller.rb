@@ -39,12 +39,23 @@ class Api::V1::UsersController < ApplicationController
 
   # change subscription from free to 3,5,10 posts perday
 
+  # Changed the code in payments controller for this 
+
   def change_subscription
     @user = current_user # Implement your user authentication logic
     @subscription = Subscription.find(params[:subscription_id])
 
     if @user.update(subscription: @subscription)
-      render json: "Subscription changed successfully."
+
+      if params[:subscription_id]==2
+        redirect_to "https://buy.stripe.com/test_14k4hU2SJ3Tefu0000"
+      elsif params[:subscription_id]==3
+        render json: "https://buy.stripe.com/test_9AQ29M9h7fBW4PmeUV"
+      else
+        render json:  "https://buy.stripe.com/test_eVa15I0KBblG2He3ce"
+      end
+      
+
     else
       render json: "Failed to change subscription."
     end

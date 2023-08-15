@@ -57,7 +57,7 @@ Rails.application.routes.draw do
   post 'lists/:list_id/create_share/:user_id', to: 'lists#create_share'
   get 'lists/:user_id/shared_list', to: 'lists#shared_lists'
   
-  post 'create_payment', to: 'payments#create_payment'
+  post 'create_payment/:id', to: 'payments#create_payment'
  
   # Defines the root path route ("/")
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_12_101535) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_15_083730) do
   create_table "comments", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "post_id", null: false
@@ -173,6 +173,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_12_101535) do
     t.integer "posts_viewed_today", default: 0
     t.integer "subscription_id", default: 1, null: false
     t.decimal "revenue_share", precision: 10, scale: 2, default: "0.0"
+    t.string "stripe_customer_id"
     t.index ["subscription_id"], name: "index_users_on_subscription_id"
   end
 
